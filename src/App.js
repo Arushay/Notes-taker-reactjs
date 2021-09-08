@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import About from './components/About';
 import NoteState from './context/notes/NoteState';
+import { Alert } from './components/Alert';
 
 function App() {
   return (
@@ -15,8 +16,7 @@ function App() {
       <NoteState>
         <Router>
           <Navbar />
-          <div className="container">
-          <Home />
+          <Alert message="I willl add CSS" />
           <Switch>
             <Route exact path="/">
               <Home />
@@ -25,7 +25,6 @@ function App() {
               <About />
             </Route>
           </Switch>
-          </div>
         </Router>
       </NoteState>
     </>

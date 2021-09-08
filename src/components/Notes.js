@@ -1,5 +1,5 @@
 import React,  { useContext }from 'react'
-import noteContext from '../context/notes/NoteContext';
+import NoteContext from '../context/notes/NoteContext';
 import NoteItem from './NoteItem';
 
 const Notes = () => {
@@ -8,9 +8,9 @@ const Notes = () => {
     return (
         <div>
             <div className="row">
-                <h1>Your Notes</h1>
+                <h1 className="text-center">Your Notes</h1>
                 {notes.map((note)=>{
-                    return <NoteItem note={note} />
+                    return <NoteItem key={note._id} note={note} />
                 })}
             </div>
         </div>
