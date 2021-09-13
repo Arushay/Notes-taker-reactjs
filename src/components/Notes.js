@@ -2,20 +2,27 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 import noteContext from '../context/notes/NoteContext';
+import { useHistory } from 'react-router';
 
-const Notes = () => {
+const Notes = (props) => {
     const context = useContext(noteContext);
     const { notes, getNotes, editNote } = context;
+    let history = useHistory();
     const [note, setNote] = useState({ id:"", etitle:"", edescription:"", etag:""});
     useEffect(() => {
-        getNotes()
+        if (localStorage.getItem('token')) {
+            getNotes()
+        } else {
+            history.push("/login");
+        }
+       
         // eslint-disable-next-line
     }, [])
 
     const updateNote = (currentNote) => {
         ref.current.click();
         setNote({id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.etag});
-
+       
     }
     const ref = useRef(null)
     const refClose = useRef(null)
@@ -23,6 +30,7 @@ const Notes = () => {
         e.preventDefault();
         editNote(note.id, note.etitle, note.edescription, note.etag);
         refClose.current.click();
+        props.showAlert('Note Updated!', "success")
     }
 
     const onChange = (e)=>{
@@ -30,7 +38,7 @@ const Notes = () => {
     }
     return (
         <div>
-            < AddNote />
+            < AddNote showAlert={props.showAlert}/>
 
             <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 update modal
@@ -70,7 +78,7 @@ const Notes = () => {
                 <h1 className="text-center">Your Notes</h1>
                 { notes.lenght===0 && 'Nothing to show!'}
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                    return <NoteItem key={note._id} updateNote={updateNote} showAlert={props.showAlert} note={note} />
                 })}
             </div>
         </div>

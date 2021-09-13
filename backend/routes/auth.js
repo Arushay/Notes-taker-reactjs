@@ -14,6 +14,7 @@ router.post('/createuser', [
     body('email', 'email must be unique').isEmail(),
     body('password', 'password must be at least 5 chars long').isLength({ min: 5 }),
 ], async (req, res) => {
+    let success = false;
     // if there is error,  return bad request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,7 +25,7 @@ router.post('/createuser', [
         let user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            return res.status(400).json({ error: "User already exixts" })
+            return res.status(400).json({success,  error: "User already exixts" })
         }
         const salt = await bcrypt.genSalt(10);
         secPassword = await bcrypt.hash(req.body.password, salt);
@@ -41,7 +42,8 @@ router.post('/createuser', [
             }
         }
         const authtoken = jwt.sign(data, JWT_SECRET);
-        res.json({ authtoken })
+        success = true;
+        res.json({success, authtoken })
     } catch (error) {
         console.error(error.message)
         res.status(500).send("Internal server error");

@@ -20,9 +20,10 @@ const Login = () => {
       if (json.success) {
           // Save the auth token & redirect
           localStorage.setItem('token', json.authtoken);
+          props.showAlert('Loged in!', "success");
           history.push("/");
       } else {
-          alert('Invalid info!');
+        props.showAlert('Invalid info!', "danger");
       }
     }
 
@@ -31,6 +32,7 @@ const Login = () => {
     }
     return (
         <div>
+            <h1 className="mt-3">Login to join</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
