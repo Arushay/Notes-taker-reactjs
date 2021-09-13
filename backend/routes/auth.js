@@ -54,6 +54,7 @@ router.post('/login', [
     body('password', 'Password cannot be blank').exists(),
 ], async (req, res) => {
 
+    let success = false;
     // if there is error,  return bad request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -63,11 +64,13 @@ router.post('/login', [
     try {
         let user = await User.findOne({ email });
         if (!user) {
+            success = false;
             return res.status(400).json({ errors: "Please login to join" });
         }
         const passwordCompare = await bcrypt.compare(password, user.password);
+        success = false;
         if (!passwordCompare) {
-            return res.status(400).json({ errors: "Please login to join" });
+            return res.status(400).json({ success, errors: "Please login to join" });
         }
         const data = {
             user: {
@@ -75,7 +78,8 @@ router.post('/login', [
             }
         }
         const authtoken = jwt.sign(data, JWT_SECRET);
-        res.json({ authtoken })
+        success = true;
+        res.json({ success, authtoken })
     } catch (error) {
         console.error(error.message)
         res.status(500).send("Internal server error");

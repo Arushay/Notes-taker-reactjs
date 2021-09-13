@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #3498db !important;
 }
 
 code {
@@ -13,4 +14,15 @@ code {
 }
 i{
   cursor: pointer;
+}
+.card{
+  border-radius: 6px !important;
+  background-color: #f1f2f6;
+}
+ .navbar{
+  background: #f1f2f6 !important;
+} 
+Link {
+  color: white !important;
+  text-decoration: none !important;
 }
